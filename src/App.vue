@@ -4,19 +4,23 @@
   </div>
 </template>
 <script>
-import storage from './storage/index';
+// import storage from './storage/index';
 export default {
   name: "app",
-  date() {
+  data() {
     return{
+      res:{}
     }
   },
   mounted() {
    // storage.setItem('a',9,'user');
-    console.log(storage.getItem('a','user'));
+    // console.log(storage.getItem('a','user'));
     // storage.clear('a');
     // storage.setItem('a',{a:123},'user');
     //storage.clear('a','user');
+    this.axios.get('/user/login').then((res)=>{
+      this.res = res
+    })
   }
 }
 </script>

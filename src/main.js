@@ -4,7 +4,12 @@ import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import App from './App.vue'
-// 默认设置
+
+const mock = true;
+if(mock){
+  require('./mock/api.js');
+}
+//axios 默认设置
 axios.defaults.baseURL = '/api';
 axios.defaults.timeout = 8000;
 // 返回错误接口拦截
@@ -18,7 +23,7 @@ axios.interceptors.response.use(function(response){
     return res.msg;
   }
 }, function(error){
-  return Promise.reject(error);; 
+  return Promise.reject(error);
 })
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false
