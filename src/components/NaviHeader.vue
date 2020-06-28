@@ -117,6 +117,7 @@ export default {
                 width: 110px;
                 background-color: #666666;
                 text-align: center;
+                margin-right: 0px;
                 .icon-cart{
                     @include bgImg(16px,12px,'/imgs/icon-cart.png');
                     margin-right: 4px;
@@ -167,6 +168,7 @@ export default {
                 }
                 .children{
                     position: absolute;
+                    z-index: 999;
                     top: 111px;
                     left: 0;
                     width: $min-width;
