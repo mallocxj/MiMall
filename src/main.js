@@ -4,9 +4,10 @@ import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueLazyLoad from 'vue-lazyload'
+import VueCookie from 'vue-cookie'
 import App from './App.vue'
 
-const mock = true;
+const mock = false;
 if(mock){
   require('./mock/api.js');
 }
@@ -21,7 +22,8 @@ axios.interceptors.response.use(function(response){
   }else if(res.status == 10){
     window.location.href = '/#/login';
   }else{
-    return res.msg;
+    alert(res.msg);
+    return Promise.reject();
   }
 }, function(error){
   return Promise.reject(error);
@@ -30,6 +32,7 @@ Vue.use(VueAxios, axios);
 Vue.use(VueLazyLoad,{
   loading:'/imgs/loading-svg/loading-bars.svg'
 });
+Vue.use(VueCookie);
 Vue.config.productionTip = false;
 
 
