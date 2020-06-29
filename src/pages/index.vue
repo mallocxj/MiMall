@@ -53,7 +53,7 @@
                 <Swiper :options="swiperOptions">
                     <swiper-slide v-for="(item,index) in slideList" :key="index">
                         <a :href="'/#/product/'+item.id" target="_blank">
-                            <img :src="item.img" :alt="item.title">
+                            <img v-lazy="item.img" :alt="item.title">
                         </a>
                     </swiper-slide>
                     <!-- 如果需要分页器 -->
@@ -65,12 +65,12 @@
             </div>
             <div class="ads-box">
                 <a :href="'/#/product/'+item.id" target="_blank" v-for="(item,index) in adsList" :key="index">
-                    <img :src="item.img">
+                    <img v-lazy="item.img">
                 </a>
             </div>
             <div class="banner-box">
                 <a href="/#/product/30" target="_blank">
-                    <img src="/imgs/banner-1.png" alt="banner">
+                    <img v-lazy="'/imgs/banner-1.png'" alt="banner">
                 </a>
             </div>
         </div>
@@ -80,14 +80,14 @@
                     <h2 class="title">手机</h2>
                     <div class="wrapper">
                         <div class="banner-left">
-                            <a href="/#/product/35" target="_blank"><img src="/imgs/mix-alpha.jpg" alt=""></a>
+                            <a href="/#/product/35" target="_blank"><img v-lazy="'/imgs/mix-alpha.jpg'" alt=""></a>
                         </div>
                         <div class="list-box">
                             <div class="list" v-for="(arr,i) in phoneList" :key="i">
                                 <div class="item" v-for="(item,j) in arr" :key="j">
                                     <span class="tag new-product">新品</span>
                                     <div class="item-img">
-                                        <img :src="item.mainImage" alt="">
+                                        <img v-lazy="item.mainImage" alt="">
                                     </div>
                                     <div class="item-info">
                                         <h3>{{item.name}}</h3>
