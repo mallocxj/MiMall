@@ -63,23 +63,70 @@
                     <div class="swiper-button-next" slot="button-next"></div>
                 </Swiper>
             </div>
-            <div class="ads-box"></div>
-            <div class="banner-box"></div>
-            <div class="product-box"></div>
+            <div class="ads-box">
+                <a :href="'/#/product/'+item.id" target="_blank" v-for="(item,index) in adsList" :key="index">
+                    <img :src="item.img">
+                </a>
+            </div>
+            <div class="banner-box">
+                <a href="/#/product/30" target="_blank">
+                    <img src="/imgs/banner-1.png" alt="banner">
+                </a>
+            </div>
+        </div>
+        <div class="gray">
+            <div class="container">
+                <div class="product-box">
+                    <h2 class="title">手机</h2>
+                    <div class="wrapper">
+                        <div class="banner-left">
+                            <a href="/#/product/35" target="_blank"><img src="/imgs/mix-alpha.jpg" alt=""></a>
+                        </div>
+                        <div class="list-box">
+                            <div class="list" v-for="(arr,i) in phoneList" :key="i">
+                                <div class="item" v-for="(item,j) in arr" :key="j">
+                                    <span class="tag new-product">新品</span>
+                                    <div class="item-img">
+                                        <img :src="item.mainImage" alt="">
+                                    </div>
+                                    <div class="item-info">
+                                        <h3>{{item.name}}</h3>
+                                        <p class="decription">{{item.subtitle}}</p>
+                                        <p class="price" @click="addCart(item.id)">{{item.price | currency}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <service-bar></service-bar>
+        <modal 
+            title="提示"
+            sureText="查看购物车"
+            btnType="3"
+            :showModal="showModal"
+            @submit="gotoCart()"
+            @cancle="showModal=false">
+            <template v-slot:modalBody>
+                <p>商品加入购物车成功！</p>
+            </template>
+        </modal>
     </div>
 </template>
 <script>
 import ServiceBar from './../components/ServiceBar'
+import Modal from './../components/Modal'
 import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 export default {
     name: 'index',
     components: {
-         Swiper,
-         SwiperSlide,
-        ServiceBar
+        Swiper,
+        SwiperSlide,
+        ServiceBar,
+        Modal
     },
     data(){
         return{
@@ -152,7 +199,60 @@ export default {
                         name:"移动4G专区"
                     },
                 ],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]
-            ]
+            ],
+            adsList:[
+                {
+                    id:33,
+                    img:'/imgs/ads/ads-1.png'
+                },
+                {
+                    id:48,
+                    img:'/imgs/ads/ads-2.jpg'
+                },
+                {
+                    id:45,
+                    img:'/imgs/ads/ads-3.png'
+                },
+                {
+                    id:47,
+                    img:'/imgs/ads/ads-4.jpg'
+                }
+            ],
+            phoneList:[],
+            showModal:false
+        }
+    },
+    filters:{
+        currency(val){
+            if(!val)return '0.00';
+            return val.toFixed(2) + '元'
+        }
+    },
+    mounted(){
+        this.init();        
+    },
+    methods:{
+        init: function(){
+            this.axios.get('/products',{
+                params:{
+                    categoryId:100012,
+                    pageSize:14
+                }
+            }).then((res)=>{
+                this.phoneList = [res.list.slice(6,10), res.list.slice(10,14)];
+            })
+        },
+        addCart(){
+            this.showModal = true;
+            /*this.axios.post('/carts',{
+                productId: id,
+                selected: true
+            }).then((res)=>{
+
+            })*/
+        },
+        gotoCart(){
+            this.$router.push('/cart');
         }
     }
 }
@@ -168,7 +268,7 @@ export default {
                     height: 451px;
                     box-sizing: border-box;
                     position: absolute;
-                    z-index: 98;
+                    z-index: 5;
                     padding: 26px 0;
                     background-color: #55575970;
                     .menu-wrap{
@@ -241,6 +341,120 @@ export default {
                     margin-left: 264px;
                 }
             }
+            .ads-box{
+                @include flex();
+                margin: 14px 0 31px 0;
+                a{
+                    width: 296px;
+                    height: 167px;
+                }
+            }
+            .banner-box{
+                margin-bottom: 50px;
+                width: 100%;
+            }
+        }
+        .gray{
+            background-color: $colorJ;
+            .container{
+                .product-box{
+                    padding: 30px 0 50px;
+                    .title{
+                        color: $colorB;
+                        font-size: $fontF;
+                        font-weight: bold;
+                        line-height: 22px;
+                    }
+                    .wrapper{
+                        margin-top: 20px;
+                        display: flex;
+                        .banner-left{
+                            margin-right: 16px;
+                            a{
+                                display: block;
+                                width: 224px;
+                                height: 619px;
+                            }
+                        }
+                        .list-box{
+                            .list{
+                                width: 986px;
+                                @include flex();
+                                &:first-child{
+                                    margin-bottom: 14px;
+                                }
+                                .item{
+                                    width: 236px;
+                                    height: 302px;
+                                    text-align: center;
+                                    background-color: #ffffff;
+                                    .tag{
+                                        display: inline-block;
+                                        width: 67px;
+                                        height: 24px;
+                                        color: #ffffff;
+                                        line-height: 24px;
+                                        font-size: 14px;
+                                        &.new-product{
+                                            background-color: #7DCF67;
+                                        }
+                                        &.kill-product{
+                                            background-color: #E82626;
+                                        }
+                                    }
+                                    .item-img{
+                                        img{
+                                            max-width: 100%;
+                                            height: 195px;
+                                        }
+                                    }
+                                    .item-info{
+                                        h3{
+                                            color: $colorB;
+                                            font-size: $fontJ;
+                                            line-height: $fontJ;
+                                            font-weight: bold;
+                                        }
+                                        .decription{
+                                            color: $colorD;
+                                            font-size: 12px;
+                                            font-weight: bold;
+                                            margin: 6px auto 13px;
+                                        }
+                                        .price{
+                                            color: #F20A0A;
+                                            font-size: $fontJ;
+                                            font-weight: bold;
+                                            cursor: pointer;
+                                            &:after{
+                                                @include bgImg(22px,22px,'/imgs/icon-cart-hover.png');
+                                                content: ' ';
+                                                margin-left: 5px;
+                                                vertical-align: -5px;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+<style lang="scss">
+@import './../assets/scss/mixin.scss';
+@import './../assets/scss/config.scss';
+    .btn{
+        &:nth-child(2){
+            margin-left: 20px;
+        }
+        &.btn-sure{
+            @include button (160px,40px,$colorA,#ffffff,16px)
+        }
+        &.btn-cancle{
+            @include button (120px,40px,#B0B0B0,#ffffff,16px)
         }
     }
 </style>

@@ -12,3 +12,25 @@
     width: $w;
     height: $h;
 }
+// 定位复用
+@mixin position($pos,$w,$h,$top,$left) {
+    width: $w;
+    height: $h;
+    top: $top;
+    left: $left;
+    position: $pos;
+}
+// 按钮复用
+@mixin button ($w,$h,$bgcolor,$color,$fontS,$fontW:bold){
+    display: inline-block;
+    width: $w;
+    height: $h;
+    border: none;
+    outline: none;
+    background-color: $bgcolor;
+    color: $color;
+    font-size: $fontS;
+    font-weight: $fontW;
+    line-height: $h;
+    text-align: center;
+}
