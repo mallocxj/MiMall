@@ -58,7 +58,7 @@ export default {
                 username:this.username,
                 password:this.password
             }).then((res)=>{
-                this.$cookie.set('userId',res.id,{expires:'1h'})
+                this.$cookie.set('userId',res.id,{expires:'1h'});
                 this.$router.push('/index');
             })
         }
