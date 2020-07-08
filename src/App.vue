@@ -17,13 +17,13 @@ export default {
   },
   methods:{
     getUser(){
-      this.axios.get('/user').then(()=>{
-        // to-do
+      this.axios.get('/user').then((res)=>{
+        this.$store.dispatch('saveUsername',res.username);
       })
     },
     getCartCount(){
-      this.axios.get('/carts/products/sum').then(()=>{
-        // todo
+      this.axios.get('/carts/products/sum').then((res)=>{
+        this.$store.dispatch('savecartCount',res);
       })
     }
   }
